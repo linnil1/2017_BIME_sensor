@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import linregress
+from  scipy.ndimage.filters import uniform_filter
+
 
 temp = [[20.5, 56], [55.5, 21], [21, 76], [76, 22], [21.5, 68], [68, 22]]
 
@@ -12,13 +14,14 @@ for num in range(6):
             datas.append(float(line.split()[2]))
 
     # normalized
-    data_init = np.mean(datas[:100])
-    data_end  = np.mean(datas[-100:])
-    data = (data_end - np.array(datas)) / (data_end - data_init)
+    data = uniform_filter(datas, size=10)
+    data_init = np.mean(data[:100])
+    data_end  = np.mean(data[-100:])
+    data = (data_end - np.array(data)) / (data_end - data_init)
 
     # get raise data
     raise_data = data[(data>0.2) & (data<0.9)]
-    log_data = -np.log(raise_data)
+    log_data = np.log(raise_data)
     slope, intercept, r_value, p_value, std_err = \
         linregress(10 * np.arange(len(raise_data)), log_data)
     text = 'slope = {:.3}\nr_squre = {:.3}'.format(slope, r_value**2)
@@ -30,15 +33,21 @@ for num in range(6):
     plt.title("Orignial data")
     plt.xlabel("time (x10ms)")
     plt.ylabel("Voltage")
+    plt.text(.95, .05, "K : {:.3}".format(np.abs((data_init - data_end) / 
+                                                 (temp[num][0] -temp[num][1]))),
+             horizontalalignment='right',
+             verticalalignment='bottom',
+             transform=plt.gca().transAxes)
+
     plt.subplot(223)
     plt.plot(log_data)
     plt.plot(np.arange(len(raise_data)) * slope * 10 + intercept)
     plt.title("log(y) vs t")
     plt.xlabel("time (x10ms)")
-    plt.ylabel(r"Abs $\log((y(t)-y_0)/(y_e-y_0))$")
-    plt.text(.95, .05, text,
+    plt.ylabel(r"$\log((y(t)-y_0)/(y_e-y_0))$")
+    plt.text(.95, .95, text,
              horizontalalignment='right',
-             verticalalignment='bottom',
+             verticalalignment='top',
              transform=plt.gca().transAxes)
 
     plt.subplot(224)
@@ -51,6 +60,6 @@ for num in range(6):
 
     # save it or plot it
     plt.suptitle("Data {}: Temperture: {} to {}".format(num, *temp[num]))
-    # plt.savefig("log5_data_" + str(num) + ".jpg")
-    # plt.clf()
-    plt.show()
+    plt.savefig("log5_data_" + str(num) + ".jpg")
+    plt.clf()
+    # plt.show()
