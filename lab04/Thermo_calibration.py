@@ -32,7 +32,7 @@ def plotOne(arr):
         ystd.append(num.std())
     x = np.array(x, dtype=np.float)
     slope, intercept, r_value, p_value, std_err = linregress(x, y)
-    # confidence of slope intercept
+    # confidence of slope and intercept
     # https://en.wikipedia.org/wiki/Simple_linear_regression
     n = len(arr)
     sb = np.sqrt(np.sum((y - slope * x - intercept) ** 2) \
@@ -72,8 +72,10 @@ for temp, num in arr:
 plt.figure()
 plotOne(arr0)
 plt.title("TC")
+plt.savefig("Cali_TC.jpg")
 plt.figure()
 plotOne(arr1)
 plt.title("RTD")
+plt.savefig("Cali_RTD.jpg")
 
 plt.show()
