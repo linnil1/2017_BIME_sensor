@@ -42,11 +42,13 @@ for i in range(len(us)):
 
         left = np.min(np.where(interval))
         right = np.max(np.where(interval))
-        plt.text(x[left],  y[left],  str(np.around(Qmin, 7)), 
+        plt.text(x[left],  y[left],  str(np.around(Qmin, 7)),
                  horizontalalignment='right', verticalalignment='bottom', size=10)
         plt.text(x[right], y[right], str(np.around(Qmax, 7)), 
                  horizontalalignment='left' , verticalalignment='bottom', size=10)
+        plt.text(x[50],    y[50],  str(np.around(us[i], 7)), 
+                 horizontalalignment='center', verticalalignment='bottom', size=10)
 
+    # plt.show()
     plt.savefig("measurement_" + str(i + 1) + ".jpg")
     plt.clf()
-    # plt.show()

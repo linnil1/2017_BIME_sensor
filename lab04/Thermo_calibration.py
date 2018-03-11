@@ -45,12 +45,12 @@ def plotOne(arr):
     # plot
     text = 'slope = {:.3}±{:.3}\nintercept = {:.3}±{:.3}\nr_squre = {:.3}'.format(
             slope, std_b, intercept, std_a, r_value**2)
-    plt.text(.05, .05, text,
-        horizontalalignment='left',
+    plt.text(.50, .05, text,
+        horizontalalignment='center',
         verticalalignment='bottom',
         transform=plt.gca().transAxes)
     plt.plot(x, slope * x + intercept, label="fit line")
-    plt.errorbar(x, y, yerr=ystd, label="measured data", ecolor='red')
+    plt.errorbar(x, y, yerr=ystd, label="measured data", ecolor='red', capsize=2)
     plt.legend(loc = 0)
 
 # main
