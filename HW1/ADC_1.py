@@ -18,6 +18,7 @@ for i in range(sf):
 
 plt.rc('text', usetex=True)
 plt.plot(t, fun, label=r"10\sin(10\pi t)")
-plt.plot(t, ADCout, label="ADCoutput(250Hz)")
+plt.plot(t, ADCout, label="ADCoutput(50Hz)")
 plt.legend()
+plt.savefig("ADC_1.png")
 plt.show()
